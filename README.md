@@ -1,4 +1,4 @@
-# 👋🏻 Welcome to [form-one](https://formone.netlify.app)
+# 👋🏻 Welcome to [form-one](https://form-one.netlify.app)
 
 <div class="space" />
 
