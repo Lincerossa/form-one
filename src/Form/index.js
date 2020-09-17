@@ -1,9 +1,8 @@
 import React, { useState, useCallback, useRef, useEffect} from "react";
-import { Form, message, Popconfirm } from 'antd'
+import { Form, message, Popconfirm, Button } from 'antd'
 import { Icon } from '@ant-design/compatible';
 import { useForm, useFieldArray, Controller, FormProvider, useFormContext,   } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers';
-import Button from "../Button"
 
 import * as I from './Inputs'
 import * as S from './styles'
@@ -43,8 +42,6 @@ const InputSwitch = (props) => {
       return <I.Tree {...props} />
     case 'treeSelect':
       return <I.TreeSelect {...props}  />
-    case 'selectSuggestion':
-      return <I.SelectSuggestion {...props} />
     case 'slider':
       return <I.Slider {...props}  />
     case 'date':
@@ -122,16 +119,11 @@ const Repeater = (props) => {
 
 
 
-export default ({ onSubmit, onChange, inputs, validationSchema, initialValues = {}, formLayout = {}, submit = { label: "Save"}}) => {
+export default ({ onSubmit, inputs, validationSchema, initialValues = {}, formLayout = {}, submit = { label: "Save"}}) => {
 
   const methods = useForm({ ...(validationSchema ? { resolver: yupResolver(validationSchema)} : {}), defaultValues: initialValues, mode:"onBlur"})
   const { handleSubmit, control, errors, isSubmitting, watch } = methods
   const watchedValues = watch()
-
-
-  // useEffect(() => {
-  //   onChange && onChange({...methods, watchedValues})
-  // }, [watchedValues, methods, onChange ])
 
   return (
     <FormProvider {...methods} watchedValues={watchedValues}> 
