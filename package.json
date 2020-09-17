@@ -1,30 +1,22 @@
 {
-  "name": "form-one",
+  "name": "jvibes",
   "version": "0.0.1",
-  "private": true,
   "homepage": ".",
-  "dependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.1",
-    "styled-components": "^5.1.1"
-  },
+  "main": "dist",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "start-storybook -p 6006",
+    "build": "build-storybook",
     "release": "semantic-release --no-ci"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "pretty-quick --staged --pattern \"**/*.*(js)\""
     }
   },
   "lint-staged": {
     "src/**/*.js": [
-      "eslint --fix",
-      "pretty-quick --staged"
+      "eslint",
+      "npm run pretty-quick"
     ]
   },
   "eslintConfig": {
@@ -53,15 +45,33 @@
       "master"
     ]
   },
+  "dependencies": {
+    "@hookform/resolvers": "^0.1.1",
+    "antd": "^4.5.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-hook-form": "^6.8.2",
+    "react-icons": "^3.11.0",
+    "styled-components": "^5.1.1"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "styled-components": "^5.1.1"
+  },
   "devDependencies": {
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@semantic-release/git": "^9.0.0",
     "@semantic-release/release-notes-generator": "^9.0.1",
-    "eslint": "^6.6.0",
+    "@storybook/addon-actions": "^6.0.1",
+    "@storybook/addon-essentials": "^6.0.1",
+    "@storybook/addon-links": "^6.0.1",
+    "@storybook/react": "^6.0.1",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.9.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
-    "eslint-config-react-app": "^5.2.1",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.6",

@@ -1,0 +1,15 @@
+{
+  "extends": ["airbnb", "airbnb/hooks"],
+  "rules": {
+    "semi": ["warn", "never"],
+    "quotes": ["warn", "single"],
+    "indent": ["warn", 2],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+  },
+  "env": {
+    "jest": true,
+    "browser": true
+  },
+  "parser": "babel-eslint"
+}
+
