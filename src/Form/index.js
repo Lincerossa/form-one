@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useRef, useEffect} from "react";
+import React, { useState, useCallback, useRef, useEffect, useMemo} from "react";
 import { Form, message, Popconfirm, Button } from 'antd'
 import { Icon } from '@ant-design/compatible';
-import { useForm, useFieldArray, Controller, FormProvider, useFormContext,   } from "react-hook-form";
+import { useForm, useFieldArray, Controller, FormProvider, useFormContext, } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers';
 
 import * as I from './Inputs'
@@ -9,52 +9,50 @@ import * as S from './styles'
 
 const InputSwitch = (props) => {
   const { name, type } = props
-  const { register, unregister } = useFormContext();
-  useEffect(() => {
-    if(!name) return
-    register({ name })
-    return () => {
-      unregister(name)
-    }
-  }, [name, register, unregister]);
+  const { register, unregister } = useFormContext()
 
+  useEffect(() => {
+    if (!name) return null
+    register({ name })
+    return () => unregister(name)
+  }, [name, register, unregister])
 
   switch (type) {
-    case 'textarea':
-      return <I.TextArea {...props} />
-    case 'text':
-    case 'password':
-    case 'number':
-      return <I.Input {...props} />
-    case 'simpleLabel':
-      return <I.SimpleLabel {...props} />
-    case 'divider':
-      return <I.Divider {...props} />
-    case 'checkbox':
-      return <I.CheckboxGroup {...props} />
-    case 'radio':
-      return <I.RadioGroup {...props} />
-    case 'select':
-      return <I.Select {...props} />
-    case 'cascader':
-      return <I.Cascader {...props} />
-    case 'tree':
-      return <I.Tree {...props} />
-    case 'treeSelect':
-      return <I.TreeSelect {...props}  />
-    case 'slider':
-      return <I.Slider {...props}  />
-    case 'date':
-      return <I.Datepicker {...props} />
-    case 'repeater':
-      return <Repeater {...props} />
-    case 'custom':
-      const CustomRender = props.CustomRender
-      return <CustomRender {...props}/>
-    case 'autocomplete':
-      return <I.Autocomplete {...props}  />
-    default:
-      return null
+  case 'textarea':
+    return <I.TextArea {...props} />
+  case 'text':
+  case 'password':
+  case 'number':
+    return <I.Input {...props} />
+  case 'simpleLabel':
+    return <I.SimpleLabel {...props} />
+  case 'divider':
+    return <I.Divider {...props} />
+  case 'checkbox':
+    return <I.CheckboxGroup {...props} />
+  case 'radio':
+    return <I.RadioGroup {...props} />
+  case 'select':
+    return <I.Select {...props} />
+  case 'cascader':
+    return <I.Cascader {...props} />
+  case 'tree':
+    return <I.Tree {...props} />
+  case 'treeSelect':
+    return <I.TreeSelect {...props} />
+  case 'slider':
+    return <I.Slider {...props} />
+  case 'date':
+    return <I.Datepicker {...props} />
+  case 'repeater':
+    return <Repeater {...props} />
+  case 'custom':
+    const CustomRender = props.CustomRender
+    return <CustomRender {...props} />
+  case 'autocomplete':
+    return <I.Autocomplete {...props} />
+  default:
+    return null
   }
 }
 
@@ -117,42 +115,43 @@ const Repeater = (props) => {
   )
 }
 
+const FormGroup = ({ hidden, validationSchema, initialValues, watchedValues, label, name, condition, ...input }) => {
+  const { errors, control } = useFormContext()
 
+  const render = useMemo(() => (!condition || condition(watchedValues)), [condition, watchedValues])
 
-export default ({ onSubmit, inputs, validationSchema, initialValues = {}, formLayout = {}, submit = { label: "Save"}}) => {
-
-  const methods = useForm({ ...(validationSchema ? { resolver: yupResolver(validationSchema)} : {}), defaultValues: initialValues, mode:"onBlur"})
-  const { handleSubmit, control, errors, isSubmitting, watch } = methods
-  const watchedValues = watch()
+  if (!render) return null
 
   return (
-    <FormProvider {...methods} watchedValues={watchedValues}> 
+    <S.FormGroup hidden={hidden}>
+      <Form.Item
+        label={label}
+        validateStatus={errors?.[name] && 'error'}
+        help={errors?.[name]?.message}
+        hasFeedback
+        required={validationSchema?.fields?.[name]}
+      >
+        <Controller
+          as={<InputSwitch />}
+          control={control}
+          name={name}
+          initialValues={initialValues?.[name]}
+          {...input}
+        />
+      </Form.Item>
+    </S.FormGroup>
+  )
+}
+
+export default ({ onSubmit, inputs, validationSchema, initialValues = {}, formLayout = {}, submit = { label: 'Save' }}) => {
+  const methods = useForm({ ...(validationSchema ? { resolver: yupResolver(validationSchema) } : {}), defaultValues: initialValues, mode: 'onBlur' })
+  const { handleSubmit, watch } = methods
+  const watchedValues = watch()
+  return (
+    <FormProvider {...methods}>
       <Form onFinish={handleSubmit(onSubmit)} {...formLayout}>
         {
-          inputs.map(input => {
-            const { hidden, label, name, condition } = input
-
-            if(condition && !condition(watchedValues)) return null
-
-            return (
-              <S.FormGroup hidden={hidden}>
-                <Form.Item
-                  label={label}
-                  validateStatus={errors?.[name] && 'error'}
-                  help={errors?.[name]?.message}
-                  hasFeedback
-                  required={validationSchema?.fields?.[name]}
-                >
-                  <Controller 
-                    as={<InputSwitch />}
-                    control={control}
-                    initialValues={initialValues?.[name]}
-                    {...input}
-                  />
-                </Form.Item>
-              </S.FormGroup>
-            )
-          })
+          inputs.map((input) => <FormGroup key={input.name} {...input} validationSchema={validationSchema} watchedValues={watchedValues} initialValues={initialValues} />)
         }
 
         {submit.label && (
@@ -161,8 +160,6 @@ export default ({ onSubmit, inputs, validationSchema, initialValues = {}, formLa
               htmlType="submit"
               type="submit"
               icon={submit.icon}
-              loading={!!isSubmitting}
-              disabled={!!isSubmitting}
               iconPosition="right"
             >
               {submit.label}
