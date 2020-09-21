@@ -4,7 +4,11 @@
     "semi": ["warn", "never"],
     "quotes": ["warn", "single"],
     "indent": ["warn", 2],
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-props-no-spreading": [0],
+    "react/prop-types": [0],
+    "object-curly-newline": [0],
+    "max-len": 0
   },
   "env": {
     "jest": true,
