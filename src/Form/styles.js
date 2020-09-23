@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 
-
-
 export const Form = styled.div`
   .ant-form-item-children,
   .ant-legacy-form-item-children {
@@ -14,7 +12,6 @@ export const Form = styled.div`
     margin-bottom: .5rem;
   }
 `
-
 
 export const FormGroup = styled.div`
   width: 100%;
@@ -77,10 +74,10 @@ export const IconWrapper = styled.div`
     transition: .2s all ease-in-out;
     border-radius: 2px;
 
-    color: ${(props) => (props.danger ? props.theme.colors.red.main : 'inherit')};
+    color: ${(props) => (props.danger ? "red" : 'inherit')};
 
     &:hover{
-      background: ${(props) => (props.danger ? props.theme.colors.red.main : props.theme.colors.blue.main)};
+      background: ${(props) => (props.danger ? "red" : "blue")};
       color: white;
     }
   }
@@ -92,7 +89,4 @@ export const RepeatButtonWrapper = styled.div`
 export const SubmitButtonWrapper = styled.div`
   text-align: right;
   margin-top: 1rem;
-  ${props => props.submitButtonWrapperStyle && {
-    ...props.submitButtonWrapperStyle
-  } }
 `

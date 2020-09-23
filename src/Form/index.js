@@ -1,8 +1,6 @@
-import React, { useState, useCallback, useRef, useEffect, useMemo} from "react";
-import { Form, message, Popconfirm, Button } from 'antd'
-import { Icon } from '@ant-design/compatible';
-import { useForm, useFieldArray, Controller, FormProvider, useFormContext, } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers';
+import React, { useEffect, useMemo } from 'react'
+import { Form, Button } from 'antd'
+import { useForm, useFieldArray, Controller, FormProvider, useFormContext } from 'react-hook-form'
 
 import * as I from './Inputs'
 import * as S from './styles'
@@ -56,117 +54,77 @@ const InputSwitch = (props) => {
   }
 }
 
-const Repeater = (props) => {
-  const {name, items, repeatButtonLabel} = props
-  const { control, watch, watchedValues } = useFormContext()
-  const { fields, append, move, remove } = useFieldArray({name})
+const FormGroup = ({ initialValues, watchedValues, watchedRepeaterValues, name, defaultValue = '', condition, ...props }) => {
+  const { control } = useFormContext()
 
-  return (
-    <>
-      {
-        fields.map((field, outerIndex) => {
-
-          return <S.Repeater>
-            {
-              items.map((item) => {
-                const { condition } = item
-
-                const watchedRepeaterValues = watch(`${name}[${outerIndex}]`)
-
-                if(condition && !condition(watchedRepeaterValues, watchedValues)) return null
-          
-                return (
-                  <Form.Item label={item.label} key={field.id}>
-                    <Controller
-                      as={<InputSwitch {...item} />}
-                      control={control}
-                      name={`${name}[${outerIndex}].${item.name}`}
-                    />
-                  </Form.Item>
-                )
-              })
-            }
-
-            <S.HandlerButtonsWrapper>
-              <S.IconWrapper><Icon type="up" onClick={() => move(outerIndex, outerIndex-1)} /></S.IconWrapper>
-              <S.IconWrapper><Icon type="down" onClick={() => move(outerIndex, outerIndex+1)} /></S.IconWrapper>
-              <S.IconWrapper danger>
-                <Popconfirm
-                  title="Are you sure delete this repeated element?"
-                  onConfirm={() => remove(outerIndex)}
-                  onCancel={null}
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <Icon type="delete" />
-                </Popconfirm>
-              </S.IconWrapper>
-            </S.HandlerButtonsWrapper>
-            </S.Repeater>
-          })
-      }
-         
-        <S.RepeatButtonWrapper>
-          <Button icon="plus" type={null} onClick={() => append({}, true)}>
-            {repeatButtonLabel}
-          </Button>
-        </S.RepeatButtonWrapper>
-    </>
-  )
-}
-
-const FormGroup = ({ hidden, validationSchema, initialValues, watchedValues, label, name, condition, ...input }) => {
-  const { errors, control } = useFormContext()
-
-  const render = useMemo(() => (!condition || condition(watchedValues)), [condition, watchedValues])
+  const render = useMemo(() => (!condition || condition(watchedValues, watchedRepeaterValues)), [condition, watchedValues, watchedRepeaterValues])
 
   if (!render) return null
 
   return (
-    <S.FormGroup hidden={hidden}>
-      <Form.Item
-        label={label}
-        validateStatus={errors?.[name] && 'error'}
-        help={errors?.[name]?.message}
-        hasFeedback
-        required={validationSchema?.fields?.[name]}
-      >
-        <Controller
-          as={<InputSwitch />}
-          control={control}
-          name={name}
-          initialValues={initialValues?.[name]}
-          {...input}
-        />
-      </Form.Item>
-    </S.FormGroup>
+    <Controller
+      as={<InputSwitch />}
+      {...props}
+      initialValues={initialValues?.[name]}
+      defaultValue={defaultValue}
+      control={control}
+      name={name}
+    />
   )
 }
 
-export default ({ onSubmit, inputs, validationSchema, initialValues = {}, formLayout = {}, submit = { label: 'Save' }}) => {
-  const methods = useForm({ ...(validationSchema ? { resolver: yupResolver(validationSchema) } : {}), defaultValues: initialValues, mode: 'onBlur' })
+const Repeater = ({ name, items, initialValues, repeatButtonLabel, ...props }) => {
+  const { watch, watchedValues } = useFormContext()
+  const { fields, append } = useFieldArray({ name })
+
+  return (
+    <>
+      {
+        fields.map((field, index) => {
+          const watchedRepeaterValues = watch(`${name}[${index}]`)
+          return (
+            <S.Repeater>
+              {
+                items.map((item) => (
+                  <FormGroup
+                    key={`${name}[${index}].${item.name}`}
+                    id={`${name}[${index}].${item.name}`}
+                    {...props}
+                    {...item}
+                    name={`${name}[${index}].${item.name}`}
+                    watchedValues={watchedValues}
+                    watchedRepeaterValues={watchedRepeaterValues}
+                    initialValues={initialValues}
+                  />
+                ))
+              }
+            </S.Repeater>
+          )
+        })
+      }
+      <S.RepeatButtonWrapper>
+        <Button icon="plus" type={null} onClick={() => append({}, true)}>
+          {repeatButtonLabel}
+        </Button>
+      </S.RepeatButtonWrapper>
+    </>
+  )
+}
+
+export default ({ onSubmit, inputs, initialValues = {}, formLayout = {}, submitLabel = 'Save' }) => {
+  const methods = useForm({ defaultValues: initialValues, mode: 'onBlur' })
   const { handleSubmit, watch } = methods
   const watchedValues = watch()
   return (
     <FormProvider {...methods}>
       <Form onFinish={handleSubmit(onSubmit)} {...formLayout}>
-        {
-          inputs.map((input) => <FormGroup key={input.name} {...input} validationSchema={validationSchema} watchedValues={watchedValues} initialValues={initialValues} />)
-        }
-
-        {submit.label && (
-          <S.SubmitButtonWrapper submitButtonWrapperStyle={submit.style}>
-            <Button
-              htmlType="submit"
-              type="submit"
-              icon={submit.icon}
-              iconPosition="right"
-            >
-              {submit.label}
-            </Button>
-          </S.SubmitButtonWrapper>
-        )}
+        { inputs.map((input) => <FormGroup key={input.name} {...input} watchedValues={watchedValues} initialValues={initialValues} />)}
+        <S.SubmitButtonWrapper>
+          <Button htmlType="submit" type="submit">
+            {submitLabel}
+          </Button>
+        </S.SubmitButtonWrapper>
       </Form>
     </FormProvider>
-  );
-};
+  )
+}
