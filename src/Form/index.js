@@ -6,7 +6,7 @@ import { useForm, useFieldArray, Controller, FormProvider, useFormContext } from
 import * as I from './Inputs'
 import * as S from './styles'
 
-const InputSwitch = (props) => {
+const InputSwitch = React.memo((props) => {
   const { name, type, CustomRender } = props
   const { register, unregister } = useFormContext()
 
@@ -52,29 +52,28 @@ const InputSwitch = (props) => {
   default:
     return null
   }
-}
+})
 
-const Repeater = ({ name, items, initialValues, repeatButtonLabel, ...props }) => {
-  const { watch, watchedValues, errors, control } = useFormContext()
+const Repeater = React.memo(({ name, items, initialValues, repeatButtonLabel, ...props }) => {
+  const { errors, control } = useFormContext()
   const { fields, append } = useFieldArray({ name, control })
 
   return (
     <>
       {
         fields.map((field, index) => {
-          const watchedRepeaterValues = watch(`${name}.${index}`)
+
           return (
-            <S.Repeater>
+            <S.Repeater key={field.name}>
               {
                 items.map((item) => (
                   <FormGroup
                     {...props}
                     {...item}
+                    repeaterName={`${name}.${index}`}
                     key={`${name}.${index}.${item.name}`}
                     error={errors?.[name]?.[index]?.[item.name]}
                     name={`${name}.${index}.${item.name}`}
-                    watchedValues={watchedValues}
-                    watchedRepeaterValues={watchedRepeaterValues}
                   />
                 ))
               }
@@ -89,18 +88,20 @@ const Repeater = ({ name, items, initialValues, repeatButtonLabel, ...props }) =
       </S.RepeatButtonWrapper>
     </>
   )
-}
+})
 
-const FormGroup = ({ label, watchedValues, watchedRepeaterValues, name, condition, error, defaultValue, ...props }) => {
-  const { control, setValue } = useFormContext()
+const FormGroup = ({ label, name, condition, error, defaultValue, repeaterName,  ...props }) => {
+  const { control, getValues, setValue, watch } = useFormContext()
+
+  const currentValue = useMemo(() => getValues(name), [getValues, name])
 
   useEffect(() => {
-    if (defaultValue && !watchedValues?.[name]) {
+    if (defaultValue && !currentValue) {
       setValue(name, defaultValue)
     }
-  }, [watchedValues, name, defaultValue, setValue])
+  }, [currentValue, name, defaultValue, setValue])
 
-  const render = useMemo(() => (!condition || condition(watchedValues, watchedRepeaterValues)), [condition, watchedValues, watchedRepeaterValues])
+  const render = useMemo(() => (!condition || condition({ watch, name, repeaterName })), [condition, watch, name, repeaterName])
 
   if (!render) return null
 
@@ -109,7 +110,7 @@ const FormGroup = ({ label, watchedValues, watchedRepeaterValues, name, conditio
       <Controller
         as={<InputSwitch />}
         {...props}
-        {...(watchedValues?.[name] ? {} : { defaultValue })}
+        {...(currentValue ? {} : { defaultValue })}
         control={control}
         name={name}
       />
@@ -120,13 +121,12 @@ const FormGroup = ({ label, watchedValues, watchedRepeaterValues, name, conditio
 
 export default ({ onSubmit, inputs, validationSchema = {}, initialValues = {}, formLayout = {}, submitLabel = 'Save' }) => {
   const methods = useForm({ defaultValues: initialValues, mode: 'onBlur', resolver: yupResolver(validationSchema) })
-  const { handleSubmit, watch, errors } = methods
-  const watchedValues = watch()
+  const { handleSubmit, errors } = methods
 
   return (
     <FormProvider {...methods}>
       <Form onFinish={handleSubmit(onSubmit)} {...formLayout}>
-        { inputs.map((input) => <FormGroup key={input.name} {...input} watchedValues={watchedValues} error={errors[input.name]} />)}
+        { inputs.map((input) => <FormGroup key={input.name} {...input} error={errors[input.name]} />)}
         <S.SubmitButtonWrapper>
           <Button htmlType="submit" type="submit">
             {submitLabel}
