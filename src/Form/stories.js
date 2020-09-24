@@ -8,28 +8,28 @@ export default {
 }
 
 const inputs = [
-  { label: 'field 1', name: 'field1', type: 'text' },
-  { label: 'field 2', name: 'field2', defaultValue: 'default value', type: 'text', condition: (e) => console.log(e) || e.field1 !== 'marci' },
+  { label: 'field 1', defaultValue: 'default 1', name: 'field1', type: 'text' },
+  { label: 'field 2', name: 'field2', defaultValue: 'default 2', type: 'text', condition: (e) => e.field1 !== 'marci' },
   { label: 'field 3', name: 'field3', type: 'repeater', items: [
     { label: 'field 4', name: 'field4', type: 'text' },
-    { label: 'field 5', name: 'field5', type: 'text', condition: (e, c) => c?.field4 !== 'marci' },
+    { label: 'field 5', name: 'field5', defaultValue: 'default 5', type: 'text', condition: (e, c) => c?.field4 !== 'marci' },
     { label: 'field 6', name: 'field6', type: 'repeater', items: [
-      { label: 'field 7', name: 'field7', type: 'text'},
+      { label: 'field 7', name: 'field7', defaultValue: 'default 7 inner', type: 'text'},
       { label: 'field 8', name: 'field8', type: 'text', condition: (e, c) => c?.field7 !== 'marci' },
     ]}
   ] },
 ]
 
 const initialValues = {
-  field1: 'lorem',
-  field2: 'lorem init',
+
+  field2: 'initialipsum',
   field3: [
     {
-      field4: 'ipsum',
+      field4: 'initialipsum repeater',
     },
     {
-      field4: 'dolor',
-      field5: 'sit',
+      field4: 'initial dolor repeater',
+      field5: 'initial sit repeater',
     },
   ],
 }

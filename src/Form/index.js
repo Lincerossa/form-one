@@ -58,7 +58,6 @@ const Repeater = ({ name, items, initialValues, repeatButtonLabel, ...props }) =
   const { watch, watchedValues, errors, control } = useFormContext()
   const { fields, append } = useFieldArray({ name, control })
 
-
   return (
     <>
       {
@@ -67,11 +66,11 @@ const Repeater = ({ name, items, initialValues, repeatButtonLabel, ...props }) =
           return (
             <S.Repeater>
               {
-                items.map((item) => (
+                items.map((item) => (
                   <FormGroup
                     {...props}
                     {...item}
-                    key={`${name}.${index}.${item.name}`}  
+                    key={`${name}.${index}.${item.name}`}
                     error={errors?.[name]?.[index]?.[item.name]}
                     name={`${name}.${index}.${item.name}`}
                     watchedValues={watchedValues}
@@ -93,7 +92,13 @@ const Repeater = ({ name, items, initialValues, repeatButtonLabel, ...props }) =
 }
 
 const FormGroup = ({ label, watchedValues, watchedRepeaterValues, name, condition, error, defaultValue, ...props }) => {
-  const { control } = useFormContext()
+  const { control, setValue } = useFormContext()
+
+  useEffect(() => {
+    if (defaultValue && !watchedValues?.[name]) {
+      setValue(name, defaultValue)
+    }
+  }, [watchedValues, name, defaultValue, setValue])
 
   const render = useMemo(() => (!condition || condition(watchedValues, watchedRepeaterValues)), [condition, watchedValues, watchedRepeaterValues])
 
