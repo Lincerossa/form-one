@@ -16,42 +16,10 @@ const InputSwitch = React.memo((props) => {
     return () => unregister(name)
   }, [name, register, unregister])
 
-  switch (type) {
-  case 'textarea':
-    return <I.TextArea {...props} />
-  case 'text':
-  case 'password':
-  case 'number':
-    return <I.Input {...props} />
-  case 'simpleLabel':
-    return <I.SimpleLabel {...props} />
-  case 'divider':
-    return <I.Divider {...props} />
-  case 'checkbox':
-    return <I.CheckboxGroup {...props} />
-  case 'radio':
-    return <I.RadioGroup {...props} />
-  case 'select':
-    return <I.Select {...props} />
-  case 'cascader':
-    return <I.Cascader {...props} />
-  case 'tree':
-    return <I.Tree {...props} />
-  case 'treeSelect':
-    return <I.TreeSelect {...props} />
-  case 'slider':
-    return <I.Slider {...props} />
-  case 'date':
-    return <I.Datepicker {...props} />
-  case 'repeater':
-    return <Repeater {...props} />
-  case 'custom':
-    return <CustomRender {...props} />
-  case 'autocomplete':
-    return <I.Autocomplete {...props} />
-  default:
-    return null
-  }
+  if (type === 'custom') return <CustomRender {...props} />
+  if (type === 'repeater') return <Repeater {...props} />
+  const Input = I[type]
+  return <Input {...props} />
 })
 
 const Repeater = React.memo(({ name, items, initialValues, repeatButtonLabel, ...props }) => {
@@ -87,9 +55,8 @@ const Repeater = React.memo(({ name, items, initialValues, repeatButtonLabel, ..
   )
 })
 
-const FormGroup = ({ label, name, condition, error, defaultValue, repeaterName,  ...props }) => {
+const FormGroup = React.memo(({ label, name, condition, error, defaultValue, repeaterName, ...props }) => {
   const { control, getValues, setValue, watch } = useFormContext()
-
   const currentValue = useMemo(() => getValues(name), [getValues, name])
 
   useEffect(() => {
@@ -108,7 +75,7 @@ const FormGroup = ({ label, name, condition, error, defaultValue, repeaterName, 
       name={name}
       hasFeedback
       validateStatus={error ? 'error' : ''}
-      help={error?.message || ''}
+      help={error?.message || ''}
     >
       <Controller
         as={<InputSwitch />}
@@ -119,12 +86,11 @@ const FormGroup = ({ label, name, condition, error, defaultValue, repeaterName, 
       />
     </Form.Item>
   )
-}
+})
 
 export default ({ onSubmit, inputs, validationSchema = {}, initialValues = {}, formLayout = {}, submitLabel = 'Save' }) => {
   const methods = useForm({ defaultValues: initialValues, mode: 'onBlur', resolver: yupResolver(validationSchema) })
   const { handleSubmit, errors } = methods
-
   return (
     <FormProvider {...methods}>
       <Form onFinish={handleSubmit(onSubmit)} {...formLayout}>
