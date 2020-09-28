@@ -61,25 +61,22 @@ const Repeater = React.memo(({ name, items, initialValues, repeatButtonLabel, ..
   return (
     <>
       {
-        fields.map((field, index) => {
-
-          return (
-            <S.Repeater key={field.name}>
-              {
-                items.map((item) => (
-                  <FormGroup
-                    {...props}
-                    {...item}
-                    repeaterName={`${name}.${index}`}
-                    key={`${name}.${index}.${item.name}`}
-                    error={errors?.[name]?.[index]?.[item.name]}
-                    name={`${name}.${index}.${item.name}`}
-                  />
-                ))
-              }
-            </S.Repeater>
-          )
-        })
+        fields.map((field, index) => (
+          <S.Repeater key={field.name}>
+            {
+              items.map((item) => (
+                <FormGroup
+                  {...props}
+                  {...item}
+                  repeaterName={`${name}.${index}`}
+                  key={`${name}.${item.name}`}
+                  error={errors?.[name]?.[index]?.[item.name]}
+                  name={`${name}.${index}.${item.name}`}
+                />
+              ))
+            }
+          </S.Repeater>
+        ))
       }
       <S.RepeatButtonWrapper>
         <Button icon="plus" type={null} onClick={() => append({}, true)}>
