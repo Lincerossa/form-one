@@ -2,6 +2,13 @@ import React from 'react'
 import * as yup from 'yup'
 import Form from './index'
 
+export default {
+  title: 'Form',
+  component: Form,
+  argTypes: { onClick: { action: 'clicked' } },
+}
+
+
 const inputs = [
   { label: 'field 1', defaultValue: 'default 1', name: 'field1', type: 'TextArea' },
   { label: 'field 2', name: 'field2', defaultValue: 'default 2', type: 'Input', condition: ({ watch }) => watch("field1") !== 'marci' },
@@ -39,21 +46,16 @@ const initialValues = {
 const validationSchema = yup.object().shape({
   field1: yup.string().required(),
   field2: yup.string().required(),
-  // field3: yup.array()
-  //   .of(
-  //     yup.object().shape({
-  //       field4: yup.string().required(),
-  //       field5: yup.string().required(),
-  //     }),
-  //   )
-  //   .required('Required'),
+  field3: yup.array()
+    .of(
+      yup.object().shape({
+        field4: yup.string().required(),
+        field5: yup.string().required(),
+      }),
+    )
+    .required('Required'),
 })
 
 const Template = (e) => <Form inputs={inputs} validationSchema={validationSchema} initialValues={initialValues} onSubmit={e.onClick} />
 export const Default = Template.bind({})
 
-export default {
-  title: 'Form',
-  component: Form,
-  argTypes: { onClick: { action: 'clicked' } },
-}
