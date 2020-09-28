@@ -106,7 +106,13 @@ const FormGroup = ({ label, name, condition, error, defaultValue, repeaterName, 
   if (!render) return null
 
   return (
-    <>
+    <Form.Item
+      label={label}
+      name={name}
+      hasFeedback
+      validateStatus={error ? 'error' : ''}
+      help={error?.message || ''}
+    >
       <Controller
         as={<InputSwitch />}
         {...props}
@@ -114,8 +120,7 @@ const FormGroup = ({ label, name, condition, error, defaultValue, repeaterName, 
         control={control}
         name={name}
       />
-      {error && error.message}
-    </>
+    </Form.Item>
   )
 }
 
