@@ -1,5 +1,5 @@
 import React from 'react'
-import { Select } from 'antd';
+import { Select } from 'antd'
 
 export default (props) => {
   const { items, style } = props
@@ -7,7 +7,7 @@ export default (props) => {
 
   return (
     <Select
-      style={style || { width: "100%" }}
+      style={style || { width: '100%' }}
       {...props}
     >
       {

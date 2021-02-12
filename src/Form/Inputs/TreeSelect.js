@@ -13,7 +13,7 @@ export default (props) => {
     style: style || { width: '100%' },
     treeCheckable: true,
     showSearch: true,
-    treeNodeFilterProp: "title",
+    treeNodeFilterProp: 'title',
     ...props,
   }
 

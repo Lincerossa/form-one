@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Tree } from 'antd';
+import { Tree } from 'antd'
 
 export default (props) => {
   const { items, value } = props
@@ -14,8 +14,7 @@ export default (props) => {
       />
     </TreeWrapper>
   )
-};
-
+}
 
 const TreeWrapper = styled.div`
   .site-tree-search-value {
