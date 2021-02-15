@@ -56,28 +56,31 @@ export const Repeater = styled.div`
   padding: 1rem;
   margin-bottom: 0.5rem;
   position: relative;
+  transition: .2s all;
+  position: relative;
+
+  &:hover {
+    border: 1px solid #40a9ff;
+  }
 `
 
 export const HandlerButtonsWrapper = styled.div`
   position: absolute;
-  display: grid;
-  top: 0;
-  right: 0;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: .25rem;
+  top: 0.25rem;
+  right: 0.25rem;
   background: white;
-  box-shadow: rgba(0, 0, 0, 0.1) -2px 0px 8px;
 `
 export const IconWrapper = styled.div`
+  box-shadow: rgba(0, 0, 0, 0.1) -2px 0px 8px;
+  cursor: pointer;
   span {
     padding: .25rem;
     transition: .2s all ease-in-out;
     border-radius: 2px;
-
     color: ${(props) => (props.danger ? 'red' : 'inherit')};
 
     &:hover{
-      background: ${(props) => (props.danger ? 'red' : 'blue')};
+      background: ${(props) => (props.danger ? 'red' : '#40a9ff')};
       color: white;
     }
   }

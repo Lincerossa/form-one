@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback, useMemo } from 'react'
-import { Form, Button } from 'antd'
+import { Form, Button, Space } from 'antd'
+import { Icon } from '@ant-design/compatible'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, useFieldArray, Controller, FormProvider, useFormContext } from 'react-hook-form'
 
@@ -48,10 +49,19 @@ const Repeater = (props) => {
               </>
             )
           })}
-
-          <Button onClick={() => remove(index)}>remove</Button>
-          <Button onClick={() => index > 0 && swap(index, index - 1)}>UP</Button>
-          <Button onClick={() => index < fields.length - 1 && swap(index, index + 1)}>DOWN</Button>
+          <S.HandlerButtonsWrapper>
+            <Space>
+              <S.IconWrapper danger onClick={() => remove(index)}>
+                <Icon type="delete" />
+              </S.IconWrapper>
+              <S.IconWrapper onClick={() => index > 0 && swap(index, index - 1)}>
+                <Icon type="up" />
+              </S.IconWrapper>
+              <S.IconWrapper onClick={() => index < (fields.length - 1) && swap(index, index + 1)}>
+                <Icon type="down" />
+              </S.IconWrapper>
+            </Space>
+          </S.HandlerButtonsWrapper>
         </S.Repeater>
       ))}
       <S.RepeatButtonWrapper>
@@ -78,7 +88,7 @@ const FormGroup = (props) => {
         <S.InputWrapper hasError={errors[name]}>
           <S.InputLabel>{label}</S.InputLabel>
           <InputSwitch {...props} {...b} {...a} />
-          {errors[name]?.message && <S.InputError>{errors[name].message}</S.InputError>}
+          {errors[name] && <S.InputError>{errors[name].message || 'Validation error'}</S.InputError>}
         </S.InputWrapper>
       )}
     />
