@@ -170,7 +170,7 @@ const getRandomInputItems = (length, label) =>
     {
       type: 'Repeater',
       label: 'custom repeater inner',
-      name: 'myRepeater0',
+      name: 'myRepeater',
       items: [
         {
           type: 'Number',
