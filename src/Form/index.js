@@ -8,9 +8,9 @@ import * as S from './styles'
 
 const InputSwitch = (props) => {
   const { type, CustomRender, name } = props
-  const { unregister, register } = useFormContext()
+  const { unregister } = useFormContext()
 
-  useEffect(() => () => unregister(name), [name, register, unregister])
+  useEffect(() => () => unregister(name), [name, unregister])
 
   if (type === 'Custom') return <CustomRender {...props} />
   if (type === 'Repeater') return <Repeater {...props} />
@@ -33,17 +33,19 @@ const Repeater = (props) => {
         <S.Repeater key={field.id}>
           {items.map((item) => {
             const itemName = item.name
+
             return (
               <FormGroup
                 {...props}
                 {...item}
-                key={name[itemName]}
+                key={`${field.id}-${item.name}`}
                 repeaterName={`${name}[${index}]`}
-                defaultValue={field[itemName] || item.defaultValue}
                 name={`${name}[${index}].${itemName}`}
+                defaultValue={field[itemName] || item.defaultValue}
               />
             )
           })}
+
           <Button onClick={() => remove(index)}>remove</Button>
           <Button onClick={() => index > 0 && swap(index, index - 1)}>UP</Button>
           <Button onClick={() => index < fields.length - 1 && swap(index, index + 1)}>DOWN</Button>
