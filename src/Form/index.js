@@ -21,6 +21,7 @@ const InputSwitch = (props) => {
 const Repeater = (props) => {
   const { name, items, defaultValue } = props
   const { control } = useFormContext()
+
   const { fields, append, remove, swap } = useFieldArray({ name, control })
 
   const handleAppend = useCallback(() => {
@@ -35,14 +36,16 @@ const Repeater = (props) => {
             const itemName = item.name
 
             return (
-              <FormGroup
-                {...props}
-                {...item}
-                key={`${field.id}-${item.name}`}
-                repeaterName={`${name}[${index}]`}
-                name={`${name}[${index}].${itemName}`}
-                defaultValue={field[itemName] || item.defaultValue}
-              />
+              <>
+                <FormGroup
+                  {...props}
+                  {...item}
+                  key={`${field.id}-${item.name}`}
+                  repeaterName={`${name}[${index}]`}
+                  name={`${name}[${index}].${itemName}`}
+                  defaultValue={field[itemName] || item.defaultValue}
+                />
+              </>
             )
           })}
 
@@ -59,7 +62,7 @@ const Repeater = (props) => {
 }
 
 const FormGroup = (props) => {
-  const { name, label, defaultValue, condition, repeaterName } = props
+  const { name, defaultValue, condition, repeaterName, label } = props
   const { control, errors, watch } = useFormContext()
 
   const render = useMemo(() => !condition || condition({ watch, name, repeaterName }), [condition, watch, name, repeaterName])
@@ -72,21 +75,17 @@ const FormGroup = (props) => {
       name={name}
       defaultValue={defaultValue}
       render={(a, b) => (
-        <Form.Item
-          label={label}
-          name={name}
-          hasFeedback
-          validateStatus={errors[name] ? 'error' : ''}
-          help={errors[name]?.message || ''}
-        >
-          <><InputSwitch {...props} {...b} {...a} /></>
-        </Form.Item>
+        <S.InputWrapper hasError={errors[name]}>
+          <S.InputLabel>{label}</S.InputLabel>
+          <InputSwitch {...props} {...b} {...a} />
+          {errors[name]?.message && <S.InputError>{errors[name].message}</S.InputError>}
+        </S.InputWrapper>
       )}
     />
   )
 }
 
-export default ({ onSubmit, onChange, inputs, validationSchema = {}, initialValues = {}, formLayout = {}, submitLabel = 'Save' }) => {
+export default ({ onSubmit, onChange, inputs, validationSchema = {}, initialValues = {}, submitLabel = 'Save' }) => {
   const methods = useForm({
     defaultValues: initialValues,
     mode: 'onBlur',
@@ -101,7 +100,7 @@ export default ({ onSubmit, onChange, inputs, validationSchema = {}, initialValu
 
   return (
     <FormProvider {...methods}>
-      <Form onFinish={methods.handleSubmit(onSubmit)} {...formLayout}>
+      <Form onFinish={methods.handleSubmit(onSubmit)}>
         {inputs.map((i) => <FormGroup {...i} key={i.name} />)}
         <S.SubmitButtonWrapper>
           <Button htmlType="submit" type="submit">{submitLabel}</Button>

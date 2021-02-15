@@ -74,10 +74,10 @@ export const IconWrapper = styled.div`
     transition: .2s all ease-in-out;
     border-radius: 2px;
 
-    color: ${(props) => (props.danger ? "red" : 'inherit')};
+    color: ${(props) => (props.danger ? 'red' : 'inherit')};
 
     &:hover{
-      background: ${(props) => (props.danger ? "red" : "blue")};
+      background: ${(props) => (props.danger ? 'red' : 'blue')};
       color: white;
     }
   }
@@ -89,4 +89,18 @@ export const RepeatButtonWrapper = styled.div`
 export const SubmitButtonWrapper = styled.div`
   text-align: right;
   margin-top: 1rem;
+`
+
+export const InputWrapper = styled.div`
+  margin-bottom: 1rem;
+  ${(props) => props.hasError && `
+    border: 1px solid red;
+  `}
+`
+export const InputLabel = styled.div`
+  margin-bottom: .5rem;
+  font-weight: 600;
+`
+export const InputError = styled.div`
+  color: red;
 `
