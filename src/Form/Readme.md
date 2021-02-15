@@ -169,34 +169,6 @@ const getRandomInputItems = (length, label) =>
     },
     {
       type: 'Repeater',
-      label: 'custom repeater inner',
-      name: 'myRepeater',
-      items: [
-        {
-          type: 'Number',
-          label: 'Choosen number in repeater',
-          name: 'myNumber0Inner',
-          defaultValue: 422,
-        },
-        {
-          type: 'Select',
-          label: 'select',
-          name: 'mySelecteInnerInner',
-          items: [
-            {
-              value: 0,
-              label: 'LABEL 1',
-            },
-            {
-              value: 1,
-              label: 'Label 2',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: 'Repeater',
       label: 'Repeater input',
       name: 'myRepeater',
       items: [
