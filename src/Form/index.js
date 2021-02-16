@@ -82,7 +82,7 @@ const FormGroup = (props) => {
     <Controller
       control={control}
       name={name}
-      defaultValue={defaultValue}
+      defaultValue={defaultValue || null}
       render={(a, b) => (
         <S.InputWrapper hasError={errors[name]}>
           <S.InputLabel>{label}</S.InputLabel>
@@ -94,13 +94,13 @@ const FormGroup = (props) => {
   )
 }
 
-export default ({ onSubmit, onChange, inputs, validationSchema = {}, initialValues = {}, submitLabel = 'Save' }) => {
+export default ({ onSubmit, onChange, inputs, validationSchema, initialValues, submitLabel = 'Save' }) => {
   const methods = useForm({
-    defaultValues: initialValues,
     mode: 'onBlur',
     criteriaMode: 'firstError',
     shouldFocusError: true,
-    resolver: yupResolver(validationSchema),
+    ...(initialValues ? { defaultValues: initialValues } : {}),
+    ...(validationSchema ? { resolver: yupResolver(validationSchema) } : {}),
   })
 
   useEffect(() => {
