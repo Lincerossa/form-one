@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
-import { Form, Button, Space } from 'antd'
+import { Button, Space } from 'antd'
 import { Icon } from '@ant-design/compatible'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, useFieldArray, Controller, FormProvider, useFormContext } from 'react-hook-form'
@@ -105,12 +105,12 @@ export default ({ onSubmit, onChange, inputs, validationSchema, initialValues, s
 
   return (
     <FormProvider {...methods}>
-      <Form onFinish={methods.handleSubmit(onSubmit)}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
         {inputs.map((i) => <FormGroup {...i} key={i.name} />)}
         <S.SubmitButtonWrapper>
           <Button htmlType="submit" type="submit">{submitLabel}</Button>
         </S.SubmitButtonWrapper>
-      </Form>
+      </form>
     </FormProvider>
   )
 }
