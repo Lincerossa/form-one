@@ -95,15 +95,30 @@ export const SubmitButtonWrapper = styled.div`
 `
 
 export const InputWrapper = styled.div`
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  padding: .25rem;
+  position: relative;
+  
   ${(props) => props.hasError && `
-    border: 1px solid red;
+    box-shadow: 0 0 0 2px rgb(255 77 79 / 20%);
   `}
 `
 export const InputLabel = styled.div`
   margin-bottom: .5rem;
-  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1;
 `
 export const InputError = styled.div`
   color: red;
+  font-size: .75rem;
+  margin-top: .25rem;
+
+  svg {
+    background: red;
+    border-radius: 50%;
+    color: white;
+    font-size: .75rem;
+    padding: .125rem;
+    margin-right: .25rem;
+  }
 `

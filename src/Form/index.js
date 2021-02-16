@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
-import { Button, Space } from 'antd'
+import { Button, Space, Form } from 'antd'
 import { Icon } from '@ant-design/compatible'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, useFieldArray, Controller, FormProvider, useFormContext } from 'react-hook-form'
@@ -20,30 +20,26 @@ const InputSwitch = (props) => {
 }
 
 const Repeater = (props) => {
-  const { name, items } = props
-  const { control } = useFormContext()
+  const { name, items, label } = props
+  const { control, errors } = useFormContext()
 
   const { fields, append, remove, swap } = useFieldArray({ name, control })
 
   return (
-    <>
+    <S.InputWrapper hasError={errors[name]}>
+      <S.InputLabel>{label}</S.InputLabel>
       {fields.map((field, index) => (
         <S.Repeater key={field.id}>
-          {items.map((item) => {
-            const itemName = item.name
-
-            return (
-
-              <FormGroup
-                {...props}
-                {...item}
-                key={`${field.id}-${item.name}`}
-                repeaterName={`${name}[${index}]`}
-                name={`${name}[${index}].${itemName}`}
-                defaultValue={field[itemName] || item.defaultValue}
-              />
-            )
-          })}
+          {items.map((item) => (
+            <FormGroup
+              {...props}
+              {...item}
+              key={`${field.id}-${item.name}`}
+              repeaterName={`${name}[${index}]`}
+              name={`${name}[${index}].${item.name}`}
+              defaultValue={field[item.name] || item.defaultValue}
+            />
+          ))}
           <S.HandlerButtonsWrapper>
             <Space>
               <S.IconWrapper danger onClick={() => remove(index)}>
@@ -62,7 +58,15 @@ const Repeater = (props) => {
       <S.RepeatButtonWrapper>
         <Button onClick={() => append({})}>add</Button>
       </S.RepeatButtonWrapper>
-    </>
+      {errors[name] && (
+        <S.InputError>
+          <Icon type="close" />
+          {' '}
+          {errors[name].message || 'Validation error'}
+        </S.InputError>
+      )}
+    </S.InputWrapper>
+
   )
 }
 
@@ -85,7 +89,13 @@ const FormGroup = (props) => {
         <S.InputWrapper hasError={errors[name]}>
           <S.InputLabel>{label}</S.InputLabel>
           <InputSwitch {...props} {...b} {...a} />
-          {errors[name] && <S.InputError>{errors[name].message || 'Validation error'}</S.InputError>}
+          {errors[name] && (
+            <S.InputError>
+              {' '}
+              <Icon type="close" />
+              {errors[name].message || 'Validation error'}
+            </S.InputError>
+          )}
         </S.InputWrapper>
       )}
     />
@@ -94,8 +104,8 @@ const FormGroup = (props) => {
 
 export default ({ onSubmit, onChange, inputs, validationSchema, initialValues, submitLabel = 'Save' }) => {
   const methods = useForm({
-    mode: 'onBlur',
-    criteriaMode: 'firstError',
+    mode: 'onChange',
+    reValidateMode: 'onChange',
     shouldFocusError: true,
     ...(initialValues ? { defaultValues: initialValues } : {}),
     ...(validationSchema ? { resolver: yupResolver(validationSchema) } : {}),
@@ -107,12 +117,12 @@ export default ({ onSubmit, onChange, inputs, validationSchema, initialValues, s
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <Form onFinish={methods.handleSubmit(onSubmit)}>
         {inputs.map((i) => <FormGroup {...i} key={i.name} />)}
         <S.SubmitButtonWrapper>
           <Button htmlType="submit" type="submit">{submitLabel}</Button>
         </S.SubmitButtonWrapper>
-      </form>
+      </Form>
     </FormProvider>
   )
 }
