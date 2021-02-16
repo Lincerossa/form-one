@@ -276,11 +276,11 @@ const getRandomInputItems = (length, label) =>
     myAge: 19,
     myRepeater: [
       {
-        myNumber: 22333333,
+        myNumber: 1,
         mySelect: 0,
         myRepeaterInner: [
           {
-            myNumberInner: 367666777667,
+            myNumberInner: 2,
           },
         ],
       },
