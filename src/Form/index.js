@@ -9,15 +9,9 @@ import * as S from './styles'
 
 const InputSwitch = (props) => {
   const { type, CustomRender, name } = props
-  const { unregister, register } = useFormContext()
+  const { unregister } = useFormContext()
 
-  useEffect(() => {
-    if (register && name) {
-      register({ name: 'tags' })
-    }
-
-    return () => unregister(name)
-  }, [name, register, unregister])
+  useEffect(() => () => unregister(name), [name, unregister])
 
   if (type === 'Custom') return <CustomRender {...props} />
   if (type === 'Repeater') return <Repeater {...props} />
@@ -89,10 +83,10 @@ const FormGroup = (props) => {
       control={control}
       name={name}
       defaultValue={defaultValue || null}
-      render={(a, b) => (
+      as={(
         <S.InputWrapper hasError={errors[name]}>
           <S.InputLabel>{label}</S.InputLabel>
-          <InputSwitch {...props} {...b} {...a} />
+          <InputSwitch {...props} />
           {errors[name] && <S.InputError>{errors[name].message || 'Validation error'}</S.InputError>}
         </S.InputWrapper>
       )}
