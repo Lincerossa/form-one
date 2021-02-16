@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Form, Button, Space } from 'antd'
 import { Icon } from '@ant-design/compatible'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -20,14 +20,10 @@ const InputSwitch = (props) => {
 }
 
 const Repeater = (props) => {
-  const { name, items, defaultValue } = props
+  const { name, items } = props
   const { control } = useFormContext()
 
   const { fields, append, remove, swap } = useFieldArray({ name, control })
-
-  const handleAppend = useCallback(() => {
-    append({ defaultValue }, true)
-  }, [defaultValue, append])
 
   return (
     <>
@@ -44,7 +40,7 @@ const Repeater = (props) => {
                 key={`${field.id}-${item.name}`}
                 repeaterName={`${name}[${index}]`}
                 name={`${name}[${index}].${itemName}`}
-                defaultValue={field[itemName]}
+                defaultValue={field[itemName] || item.defaultValue}
               />
             )
           })}
@@ -64,7 +60,7 @@ const Repeater = (props) => {
         </S.Repeater>
       ))}
       <S.RepeatButtonWrapper>
-        <Button onClick={handleAppend}>add</Button>
+        <Button onClick={() => append({})}>add</Button>
       </S.RepeatButtonWrapper>
     </>
   )
