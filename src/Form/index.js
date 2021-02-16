@@ -83,10 +83,10 @@ const FormGroup = (props) => {
       control={control}
       name={name}
       defaultValue={defaultValue || null}
-      as={(
+      render={(a, b) => (
         <S.InputWrapper hasError={errors[name]}>
           <S.InputLabel>{label}</S.InputLabel>
-          <InputSwitch {...props} />
+          <InputSwitch {...props} {...b} {...a} />
           {errors[name] && <S.InputError>{errors[name].message || 'Validation error'}</S.InputError>}
         </S.InputWrapper>
       )}
