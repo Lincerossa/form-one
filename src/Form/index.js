@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import { Button, Space, Form } from 'antd'
+import get from 'get-value'
 import { Icon } from '@ant-design/compatible'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, useFieldArray, Controller, FormProvider, useFormContext } from 'react-hook-form'
@@ -61,8 +62,7 @@ const Repeater = (props) => {
       {errors[name] && (
         <S.InputError>
           <Icon type="close" />
-          {' '}
-          {errors[name].message || 'Validation error'}
+          Repeater error
         </S.InputError>
       )}
     </S.InputWrapper>
@@ -85,19 +85,21 @@ const FormGroup = (props) => {
       control={control}
       name={name}
       defaultValue={defaultValue || null}
-      render={(a, b) => (
-        <S.InputWrapper hasError={errors[name]}>
-          <S.InputLabel>{label}</S.InputLabel>
-          <InputSwitch {...props} {...b} {...a} />
-          {errors[name] && (
-            <S.InputError>
-              {' '}
-              <Icon type="close" />
-              {errors[name].message || 'Validation error'}
-            </S.InputError>
-          )}
-        </S.InputWrapper>
-      )}
+      render={(a, b) => {
+        const error = get(errors, name.replaceAll('[', '.').replaceAll('].', '.'))
+        return (
+          <S.InputWrapper hasError={error}>
+            <S.InputLabel>{label}</S.InputLabel>
+            <InputSwitch {...props} {...b} {...a} />
+            {error && (
+              <S.InputError>
+                <Icon type="close" />
+                {error.message}
+              </S.InputError>
+            )}
+          </S.InputWrapper>
+        )
+      }}
     />
   )
 }
