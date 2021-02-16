@@ -9,9 +9,15 @@ import * as S from './styles'
 
 const InputSwitch = (props) => {
   const { type, CustomRender, name } = props
-  const { unregister } = useFormContext()
+  const { unregister, register } = useFormContext()
 
-  useEffect(() => () => unregister(name), [name, unregister])
+  useEffect(() => {
+    if (register && name) {
+      register({ name: 'tags' })
+    }
+
+    return () => unregister(name)
+  }, [name, register, unregister])
 
   if (type === 'Custom') return <CustomRender {...props} />
   if (type === 'Repeater') return <Repeater {...props} />
