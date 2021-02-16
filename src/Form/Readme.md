@@ -171,6 +171,10 @@ const getRandomInputItems = (length, label) =>
       type: 'Repeater',
       label: 'Repeater input',
       name: 'myRepeater',
+      condition: ({ watch }) => {
+        const myAge = watch('myAge')
+        return myAge > 18
+      },
       items: [
         {
           type: 'Number',

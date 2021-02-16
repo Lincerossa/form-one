@@ -14,7 +14,7 @@ const InputSwitch = (props) => {
   useEffect(() => () => unregister(name), [name, unregister])
 
   if (type === 'Custom') return <CustomRender {...props} />
-  if (type === 'Repeater') return <Repeater {...props} />
+
   const Input = I[type]
   return <Input {...props} />
 }
@@ -67,12 +67,14 @@ const Repeater = (props) => {
 }
 
 const FormGroup = (props) => {
-  const { name, defaultValue, condition, repeaterName, label } = props
+  const { name, defaultValue, condition, repeaterName, label, type } = props
   const { control, errors, watch } = useFormContext()
 
   const render = useMemo(() => !condition || condition({ watch, name, repeaterName }), [condition, watch, name, repeaterName])
 
   if (!render) return null
+
+  if (type === 'Repeater') return <Repeater {...props} />
 
   return (
     <Controller
