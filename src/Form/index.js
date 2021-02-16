@@ -44,7 +44,7 @@ const Repeater = (props) => {
                 key={`${field.id}-${item.name}`}
                 repeaterName={`${name}[${index}]`}
                 name={`${name}[${index}].${itemName}`}
-                defaultValue={field[itemName] || item.defaultValue}
+                defaultValue={field[itemName]}
               />
             )
           })}
