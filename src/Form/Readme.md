@@ -92,7 +92,7 @@ const getRandomInputItems = (length, label) =>
             {
               type: 'Repeater',
               label: 'custom repeater inner',
-              name: 'myRepeaterInner',
+              name: 'myRepeaterInnerInner',
               items: [
                 {
                   type: 'Number',
@@ -102,7 +102,7 @@ const getRandomInputItems = (length, label) =>
                 {
                   type: 'Select',
                   label: 'select',
-                  name: 'mySelecteInnerInner',
+                  name: 'mySelectInnerInner',
                   items: [
                     {
                       value: 0,
@@ -223,7 +223,7 @@ const getRandomInputItems = (length, label) =>
             {
               type: 'Repeater',
               label: 'custom repeater inner',
-              name: 'myRepeaterInner',
+              name: 'myRepeaterInnerInner',
               items: [
                 {
                   type: 'Number',
@@ -234,7 +234,7 @@ const getRandomInputItems = (length, label) =>
                 {
                   type: 'Select',
                   label: 'select',
-                  name: 'mySelecteInnerInner',
+                  name: 'mySelectInnerInner',
                   items: [
                     {
                       value: 0,
@@ -272,7 +272,10 @@ const getRandomInputItems = (length, label) =>
     }),
   })}
   initialValues={{
+    divider: null,
     firstName: 'Marcello',
+    birthday: null,
+    myCheckbox: null,
     myAge: 19,
     myRepeater: [
       {
@@ -281,6 +284,13 @@ const getRandomInputItems = (length, label) =>
         myRepeaterInner: [
           {
             myNumberInner: 2,
+            mySelectInner: null,
+            myRepeaterInnerInner: [
+              {
+                myNumberInnerInner: null,
+                mySelectInnerInner: null,
+              },
+            ],
           },
         ],
       },

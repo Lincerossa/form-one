@@ -37,16 +37,15 @@ const Repeater = (props) => {
             const itemName = item.name
 
             return (
-              <>
-                <FormGroup
-                  {...props}
-                  {...item}
-                  key={`${field.id}-${item.name}`}
-                  repeaterName={`${name}[${index}]`}
-                  name={`${name}[${index}].${itemName}`}
-                  defaultValue={field[itemName] || item.defaultValue}
-                />
-              </>
+
+              <FormGroup
+                {...props}
+                {...item}
+                key={`${field.id}-${item.name}`}
+                repeaterName={`${name}[${index}]`}
+                name={`${name}[${index}].${itemName}`}
+                defaultValue={field[itemName] || item.defaultValue}
+              />
             )
           })}
           <S.HandlerButtonsWrapper>
