@@ -76,6 +76,8 @@ const FormGroup = (props) => {
   const { name, defaultValue, condition, repeaterName, label, type } = props
   const { control, errors, watch } = useFormContext()
   const renderable = useMemo(() => !condition || condition({ watch, name, repeaterName }), [condition, watch, name, repeaterName])
+  const error = get(errors, name.replaceAll('[', '.').replaceAll('].', '.'))
+
   if (!renderable) return null
   if (type === 'Repeater') return <Repeater {...props} />
 
@@ -85,7 +87,7 @@ const FormGroup = (props) => {
       name={name}
       defaultValue={defaultValue || null}
       render={(a, b) => (
-        <InputGroup label={label} error={get(errors, name.replaceAll('[', '.').replaceAll('].', '.'))}>
+        <InputGroup label={label} error={error}>
           <InputSwitch {...props} {...b} {...a} />
         </InputGroup>
       )}
