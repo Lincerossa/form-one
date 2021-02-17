@@ -150,13 +150,20 @@ const getRandomInputItems = (length, label) =>
       then: Yup.array()
         .of(
           Yup.object().shape({
-            myNumber: Yup.number().required('has to be a number'),
+            myNumber: Yup.string().required('Please, choose a number'),
             myRepeaterInner: Yup.array().of(
               Yup.object()
                 .shape({
-                  myNumberInner: Yup.number().required('has to be a number'),
+                  myNumberInner: Yup.string().required('Please, choose a number'),
+                  myRepeaterInnerInner: Yup.array().of(
+                    Yup.object()
+                      .shape({
+                        myNumberInnerInner: Yup.string().required('Please, choose a number'),
+                      })
+                      .required('Please, choose a number')
+                  ),
                 })
-                .required('has to be a number')
+                .required('Please, choose a number')
             ),
           })
         )
