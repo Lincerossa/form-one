@@ -8,17 +8,19 @@ import { useForm, useFieldArray, Controller, FormProvider, useFormContext } from
 import * as I from './Inputs'
 import * as S from './styles'
 
-const InputGroup = ({ label, error, children }) => (
-  <S.InputWrapper hasError={error}>
-    <S.InputLabel>{label}</S.InputLabel>
-    {children}
-    {error && (
-      <S.InputError>
-        <Icon type="close" />
-        {error.message || 'error'}
-      </S.InputError>
-    )}
-  </S.InputWrapper>
+const InputGroup = ({ label, error, children, layout }) => (
+  <S.InputGroup hasError={error} layout={layout}>
+    <S.InputLabel layout={layout}>{label}</S.InputLabel>
+    <S.InputWrapper layout={layout}>
+      {children}
+      {error && (
+        <S.InputError>
+          <Icon type="close" />
+          {error.message || 'error'}
+        </S.InputError>
+      )}
+    </S.InputWrapper>
+  </S.InputGroup>
 )
 
 const InputSwitch = (props) => {
@@ -73,7 +75,7 @@ const Repeater = (props) => {
 }
 
 const FormGroup = (props) => {
-  const { name, defaultValue, condition, repeaterName, label, type } = props
+  const { name, defaultValue, condition, repeaterName, label, type, layout } = props
   const { control, errors, watch } = useFormContext()
   const renderable = useMemo(() => !condition || condition({ watch, name, repeaterName }), [condition, watch, name, repeaterName])
   const error = get(errors, name.replaceAll('[', '.').replaceAll('].', '.'))
@@ -87,7 +89,7 @@ const FormGroup = (props) => {
       name={name}
       defaultValue={defaultValue || null}
       render={(a, b) => (
-        <InputGroup label={label} error={error}>
+        <InputGroup label={label} error={error} layout={layout}>
           <InputSwitch {...props} {...b} {...a} />
         </InputGroup>
       )}
@@ -95,7 +97,7 @@ const FormGroup = (props) => {
   )
 }
 
-export default ({ onSubmit, onChange, inputs, validationSchema, initialValues, submitLabel = 'Save' }) => {
+export default ({ onSubmit, onChange, inputs, validationSchema, initialValues, submitLabel = 'Save', layout }) => {
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -111,7 +113,7 @@ export default ({ onSubmit, onChange, inputs, validationSchema, initialValues, s
   return (
     <FormProvider {...methods}>
       <Form onFinish={methods.handleSubmit(onSubmit)}>
-        {inputs.map((i) => <FormGroup {...i} key={i.name} />)}
+        {inputs.map((i) => <FormGroup {...i} key={i.name} layout={layout} />)}
         <S.SubmitButtonWrapper>
           <Button htmlType="submit" type="submit">{submitLabel}</Button>
         </S.SubmitButtonWrapper>

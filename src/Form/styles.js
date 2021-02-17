@@ -94,7 +94,7 @@ export const SubmitButtonWrapper = styled.div`
   margin-top: 1rem;
 `
 
-export const InputWrapper = styled.div`
+export const InputGroup = styled.div`
   margin-bottom: 1.5rem;
   padding: .25rem;
   position: relative;
@@ -102,12 +102,30 @@ export const InputWrapper = styled.div`
   ${(props) => props.hasError && `
     box-shadow: 0 0 0 2px rgb(255 77 79 / 20%);
   `}
+
+  ${(props) => props.layout === 'horizontal' && `
+    display: flex;
+  `}
 `
-export const InputLabel = styled.div`
+
+export const InputLabel = styled.label`
+  display: block; 
   margin-bottom: .5rem;
   font-size: 1rem;
   line-height: 1;
+  ${(props) => props.layout === 'horizontal' && `
+    display: flex;
+    flex-basis: 200px;
+  `}
 `
+export const InputWrapper = styled.div`
+  ${(props) => props.layout === 'horizontal' && `
+
+    flex-basis: 100%;
+    width: 100%;
+  `}
+`
+
 export const InputError = styled.div`
   color: red;
   font-size: .75rem;
