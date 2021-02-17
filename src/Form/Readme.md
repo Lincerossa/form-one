@@ -10,6 +10,14 @@ const getRandomInputItems = (length, label) =>
   }))
 
 ;<Form
+  onChange={({ watch, setValue }) => {
+    const name = watch('firstName')
+    const age = watch('myAge')
+    if (name === 'marco' && age !== 99) {
+      setValue('myAge', 99)
+    }
+  }}
+  layout="vertical"
   inputs={[
     {
       type: 'Divider',
