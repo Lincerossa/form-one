@@ -5,14 +5,14 @@
   "homepage": ".",
   "main": "dist",
   "author": {
-    "name" : "Luatti Marcello",
-    "email" : "marcelloluatti@gmail.com"
+    "name": "Luatti Marcello",
+    "email": "marcelloluatti@gmail.com"
   },
   "scripts": {
     "start": "npx styleguidist server",
     "build": "npx styleguidist build",
     "test": "react-scripts test",
-    "transpile": "parcel build src/Form/index.js --no-source-maps --no-cache",
+    "transpile": "babel src/Form -d dist --presets minify --copy-files",
     "release": "semantic-release --no-ci"
   },
   "browserslist": {
@@ -59,6 +59,9 @@
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.12.16",
+    "@babel/preset-env": "^7.12.16",
+    "@babel/preset-react": "^7.12.13",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@semantic-release/git": "^9.0.0",
@@ -66,13 +69,14 @@
     "@semantic-release/release-notes-generator": "^9.0.1",
     "ast-types": "^0.14.2",
     "babel-eslint": "^10.1.0",
+    "babel-plugin-styled-components": "^1.12.0",
+    "babel-preset-minify": "^0.5.1",
     "eslint": "^7.19.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "parcel-bundler": "^1.12.4",
     "react-dom": "^17.0.1",
     "react-scripts": "^4.0.2",
     "react-styleguidist": "^11.1.5",

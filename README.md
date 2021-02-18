@@ -8,8 +8,6 @@
 
 <div class="space" />
 
- soon... on npm
-
 ```
   npm i form-one
   import FormOne from 'form-one'
