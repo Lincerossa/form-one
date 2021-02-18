@@ -5,8 +5,8 @@
   "homepage": ".",
   "main": "dist",
   "author": {
-    "name" : "Luatti Marcello",
-    "email" : "marcelloluatti@gmail.com"
+    "name": "Luatti Marcello",
+    "email": "marcelloluatti@gmail.com"
   },
   "scripts": {
     "start": "npx styleguidist server",
