@@ -4,6 +4,10 @@
   "version": "1.0.0",
   "homepage": ".",
   "main": "dist",
+  "author": {
+    "name" : "Luatti Marcello",
+    "email" : "marcelloluatti@gmail.com"
+  },
   "scripts": {
     "start": "npx styleguidist server",
     "build": "npx styleguidist build",
