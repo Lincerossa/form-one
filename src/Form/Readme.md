@@ -2,14 +2,13 @@ VERTICAL
 
 ```jsx
 import React from 'react'
-import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
 import 'antd/dist/antd.css'
 
 const getRandomInputItems = (length, label) =>
   Array.from({ length }, (e, i) => ({
     label: `${label}${i + 1}`,
-    value: uuidv4(),
+    value: Math.random(),
   }))
 
 ;<Form
@@ -211,7 +210,7 @@ import 'antd/dist/antd.css'
 const getRandomInputItems = (length, label) =>
   Array.from({ length }, (e, i) => ({
     label: `${label}${i + 1}`,
-    value: uuidv4(),
+    value: Math.random(),
   }))
 
 ;<Form
