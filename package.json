@@ -1,7 +1,7 @@
 {
   "name": "form-one",
   "description": "reac-hook-form abstraction for controlled antd inputs",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "homepage": ".",
   "main": "dist",
   "scripts": {
