@@ -2,7 +2,7 @@
   "name": "form-one",
   "description": "reac-hook-form abstraction for controlled antd inputs",
   "version": "1.0.0",
-  "homepage": ".",
+  "homepage": "https://form-one.netlify.app",
   "main": "dist",
   "author": {
     "name": "Luatti Marcello",
