@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/Lincerossa/form-one/compare/v1.2.0...v1.3.0) (2021-02-18)
+
+
+### Features
+
+* 📖 docs update ([41f18c4](https://github.com/Lincerossa/form-one/commit/41f18c49b8e32e2468f85280c9c13b84207ce7c9))
+
 # [1.2.0](https://github.com/Lincerossa/form-one/compare/v1.1.0...v1.2.0) (2021-02-18)
 
 
