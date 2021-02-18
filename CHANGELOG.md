@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/Lincerossa/form-one/compare/v1.1.0...v1.2.0) (2021-02-18)
+
+
+### Features
+
+* 🐞 the transpile process was bugged, now it should properly works ([165588e](https://github.com/Lincerossa/form-one/commit/165588e7d30c937c03a7ebb1b7ce7365240e7350))
+
 # [1.1.0](https://github.com/Lincerossa/form-one/compare/v1.0.0...v1.1.0) (2021-02-18)
 
 
