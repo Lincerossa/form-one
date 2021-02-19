@@ -17,7 +17,6 @@ You can use [form-one](https://github.com/Lincerossa/form-one) in React apps by 
 ```
 
 ## Why it is so simple?
-You can use [form-one](https://github.com/Lincerossa/form-one) in React apps by just installing it.
 These are the available props:
 ```
   <FormOne
