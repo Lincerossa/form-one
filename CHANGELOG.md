@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/Lincerossa/form-one/compare/v1.3.0...v1.3.1) (2021-02-19)
+
+
+### Bug Fixes
+
+* minor readme update ([4ac3b7a](https://github.com/Lincerossa/form-one/commit/4ac3b7af3005af73b2bb4d9d9d46295bad4279f8))
+
 # [1.3.0](https://github.com/Lincerossa/form-one/compare/v1.2.0...v1.3.0) (2021-02-18)
 
 
