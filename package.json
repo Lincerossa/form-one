@@ -1,6 +1,6 @@
 {
   "name": "form-one",
-  "description": "reac-hook-form abstraction for controlled antd inputs",
+  "description": "react-hook-form abstraction for controlled antd inputs",
   "version": "1.0.0",
   "homepage": "https://form-one.netlify.app",
   "main": "dist",
