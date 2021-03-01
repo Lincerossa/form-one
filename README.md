@@ -30,4 +30,4 @@ These are the available props:
 
 ```
 
-Let's have a look about how it works in a real demo, by visiting it's [playground](https://codesandbox.io/s/form-one-playground-g9uwg?file=/src/App.js) in Codesandbox
+Let's have a look about how it works in a real demo, by visiting it's [playground](https://codesandbox.io/s/form-one-playground-g9uwg?file=/src/App.js) in Codesandbox or its [storybook](https://form-one.netlify.app/)
