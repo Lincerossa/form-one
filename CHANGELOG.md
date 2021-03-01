@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/Lincerossa/form-one/compare/v1.3.1...v1.4.0) (2021-03-01)
+
+
+### Features
+
+* 🚀 now the Repeater has a brand new functionality. it can render a preview or an edit mode. ([001eab7](https://github.com/Lincerossa/form-one/commit/001eab7b9ad4f16b7afde2c8126080134d9cdbdd))
+
 ## [1.3.1](https://github.com/Lincerossa/form-one/compare/v1.3.0...v1.3.1) (2021-02-19)
 
 
