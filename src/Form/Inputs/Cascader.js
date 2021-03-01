@@ -1,8 +1,9 @@
 import React from 'react'
-import { Cascader } from 'antd'
+import Cascader from 'antd/lib/cascader';
+
 
 function filter(inputValue, path) {
-  return path.some((option) => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1)
+  return path.some((option) => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
 }
 
 export default (props) => {

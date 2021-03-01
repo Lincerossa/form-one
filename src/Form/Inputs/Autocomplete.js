@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { AutoComplete } from 'antd'
+import React, { useState } from 'react';
+import AutoComplete from 'antd/lib/auto-complete';
 
-const { Option } = AutoComplete
+const { Option } = AutoComplete;
 
 export default ({ onSearch, style, ...props }) => {
   const [results, setResults] = useState(null)

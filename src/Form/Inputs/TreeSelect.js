@@ -1,5 +1,5 @@
 import React from 'react'
-import { TreeSelect } from 'antd'
+import TreeSelect from 'antd/lib/tree-select'
 
 const { SHOW_PARENT } = TreeSelect
 
@@ -13,7 +13,7 @@ export default (props) => {
     style: style || { width: '100%' },
     treeCheckable: true,
     showSearch: true,
-    treeNodeFilterProp: 'title',
+    treeNodeFilterProp: "title",
     ...props,
   }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Checkbox } from 'antd'
+import Checkbox from 'antd/lib/checkbox'
 
 export default (props) => {
   const { items } = props
