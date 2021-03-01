@@ -32,16 +32,17 @@ const InputSwitch = (props) => {
   if (type === 'custom') return <CustomRender {...props} />
 
   const Input = I[type]
-  const { repeaterName, condition, RenderPreview, switchLabel, ...htmlProps } = props
-  return <Input {...htmlProps} />
+  const { repeaterName, condition, switchLabel, ...rest } = props
+  return <Input {...rest} />
 }
 
 const Repeater = (props) => {
-  const { name, items, label, layout, RenderPreview } = props
+  const { name, items, label, layout } = props
   const { control, errors, watch } = useFormContext()
   const { fields, append, remove, swap } = useFieldArray({ name, control })
   const [previewRepeaters, setPreviewRepeaters] = useState([])
 
+  const { RenderPreview, ...rest } = props
   return (
     <InputGroup label={label} error={errors[name]}>
       {fields.map((field, index) => {
@@ -63,7 +64,7 @@ const Repeater = (props) => {
             <S.FormGroupWrapper visible={editMode}>
               {items.map((item) => (
                 <FormGroup
-                  {...props}
+                  {...rest}
                   {...item}
                   key={`${field.id}-${item.name}`}
                   repeaterName={`${name}[${index}]`}
