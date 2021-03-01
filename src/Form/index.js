@@ -1,7 +1,9 @@
-import React, { useEffect, useMemo } from 'react'
-import { Button, Space, Form } from 'antd'
+import React, { useEffect, useMemo, useState } from 'react'
+import Space from 'antd/lib/space'
+import Form from 'antd/lib/form'
+import Button from 'antd/lib/button'
 import get from 'get-value'
-import { Icon } from '@ant-design/compatible'
+import { UpOutlined, DownOutlined, EditOutlined, ExpandOutlined, DeleteOutlined, CloseOutlined } from '@ant-design/icons'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, useFieldArray, Controller, FormProvider, useFormContext } from 'react-hook-form'
 
@@ -15,7 +17,7 @@ const InputGroup = ({ label, error, children, layout }) => (
       {children}
       {error && (
         <S.InputError>
-          <Icon type="close" />
+          <CloseOutlined />
           {error.message || 'error'}
         </S.InputError>
       )}
@@ -27,46 +29,78 @@ const InputSwitch = (props) => {
   const { type, CustomRender, name } = props
   const { unregister } = useFormContext()
   useEffect(() => () => unregister(name), [name, unregister])
-  if (type === 'Custom') return <CustomRender {...props} />
+  if (type === 'custom') return <CustomRender {...props} />
 
   const Input = I[type]
-  return <Input {...props} />
+  const { repeaterName, condition, RenderPreview, switchLabel, ...htmlProps } = props
+  return <Input {...htmlProps} />
 }
 
 const Repeater = (props) => {
-  const { name, items, label } = props
-  const { control, errors } = useFormContext()
+  const { name, items, label, layout, RenderPreview } = props
+  const { control, errors, watch } = useFormContext()
   const { fields, append, remove, swap } = useFieldArray({ name, control })
+  const [previewRepeaters, setPreviewRepeaters] = useState([])
 
   return (
     <InputGroup label={label} error={errors[name]}>
-      {fields.map((field, index) => (
-        <S.Repeater key={field.id}>
-          {items.map((item) => (
-            <FormGroup
-              {...props}
-              {...item}
-              key={`${field.id}-${item.name}`}
-              repeaterName={`${name}[${index}]`}
-              name={`${name}[${index}].${item.name}`}
-              defaultValue={field[item.name] || item.defaultValue}
-            />
-          ))}
-          <S.HandlerButtonsWrapper>
-            <Space>
-              <S.IconWrapper danger onClick={() => remove(index)}>
-                <Icon type="delete" />
-              </S.IconWrapper>
-              <S.IconWrapper onClick={() => index > 0 && swap(index, index - 1)}>
-                <Icon type="up" />
-              </S.IconWrapper>
-              <S.IconWrapper onClick={() => index < (fields.length - 1) && swap(index, index + 1)}>
-                <Icon type="down" />
-              </S.IconWrapper>
-            </Space>
-          </S.HandlerButtonsWrapper>
-        </S.Repeater>
-      ))}
+      {fields.map((field, index) => {
+        const previewIndex = previewRepeaters?.findIndex((id) => id === field.id)
+        const editMode = previewIndex === -1
+
+        function handleSetEditMode() {
+          if (!editMode) {
+            setPreviewRepeaters((e) => [...e.slice(0, previewIndex), ...e.slice(previewIndex + 1)])
+          }
+        }
+        function handleSetPreviewMode() {
+          setPreviewRepeaters([...previewRepeaters, field.id])
+        }
+
+        return (
+          <S.Repeater key={field.id} layout={layout}>
+            {RenderPreview && !editMode && <RenderPreview name={`${name}[${index}]`} watch={watch} />}
+            <S.FormGroupWrapper visible={editMode}>
+              {items.map((item) => (
+                <FormGroup
+                  {...props}
+                  {...item}
+                  key={`${field.id}-${item.name}`}
+                  repeaterName={`${name}[${index}]`}
+                  name={`${name}[${index}].${item.name}`}
+                  defaultValue={field[item.name] || item.defaultValue}
+                />
+              ))}
+            </S.FormGroupWrapper>
+
+            <S.HandlerButtonsWrapper>
+              <Space>
+                {RenderPreview && (
+                  <S.RenderPreviewHandlers>
+                    <Space>
+                      <S.IconWrapper active={editMode} onClick={handleSetEditMode}>
+                        <EditOutlined />
+                      </S.IconWrapper>
+                      <S.IconWrapper active={!editMode} onClick={handleSetPreviewMode}>
+                        <ExpandOutlined />
+                      </S.IconWrapper>
+                    </Space>
+                  </S.RenderPreviewHandlers>
+                )}
+                <S.IconWrapper danger onClick={() => remove(index)}>
+                  <DeleteOutlined />
+                </S.IconWrapper>
+                <S.IconWrapper onClick={() => index > 0 && swap(index, index - 1)}>
+                  <UpOutlined />
+                </S.IconWrapper>
+                <S.IconWrapper onClick={() => index < (fields.length - 1) && swap(index, index + 1)}>
+                  <DownOutlined />
+                </S.IconWrapper>
+              </Space>
+            </S.HandlerButtonsWrapper>
+          </S.Repeater>
+        )
+      })}
       <S.RepeatButtonWrapper>
         <Button onClick={() => append({})}>add</Button>
       </S.RepeatButtonWrapper>
@@ -81,7 +115,7 @@ const FormGroup = (props) => {
   const error = get(errors, name.replaceAll('[', '.').replaceAll('].', '.'))
 
   if (!renderable) return null
-  if (type === 'Repeater') return <Repeater {...props} />
+  if (type === 'repeater') return <Repeater {...props} />
 
   return (
     <Controller
@@ -97,7 +131,7 @@ const FormGroup = (props) => {
   )
 }
 
-export default ({ onSubmit, onChange, inputs, validationSchema, initialValues, submitLabel = 'Save', layout }) => {
+export default ({ onSubmit, style = {}, onChange, inputs, validationSchema, initialValues, submitLabel = 'Save', layout }) => {
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -112,10 +146,10 @@ export default ({ onSubmit, onChange, inputs, validationSchema, initialValues, s
 
   return (
     <FormProvider {...methods}>
-      <Form onFinish={methods.handleSubmit(onSubmit)}>
+      <Form onFinish={methods.handleSubmit(onSubmit)} style={style.form}>
         {inputs.map((i) => <FormGroup {...i} key={i.name} layout={layout} />)}
-        <S.SubmitButtonWrapper>
-          <Button htmlType="submit" type="submit">{submitLabel}</Button>
+        <S.SubmitButtonWrapper style={style.submitWrapper}>
+          <Button htmlType="submit" type="submit" style={style.submit}>{submitLabel}</Button>
         </S.SubmitButtonWrapper>
       </Form>
     </FormProvider>
