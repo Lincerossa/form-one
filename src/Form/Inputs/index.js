@@ -12,5 +12,4 @@ export { default as tree } from './Tree'
 export { default as autocomplete } from './Autocomplete'
 export { default as divider } from './Divider'
 export { default as number } from './Number'
-// eslint-disable-next-line import/no-cycle
-export { default as conditional } from './Conditional'
+export { default as email } from './Email'
