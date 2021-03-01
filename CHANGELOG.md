@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/Lincerossa/form-one/compare/v1.4.1...v1.4.2) (2021-03-01)
+
+
+### Bug Fixes
+
+* 🐞 RenderPreview has to be removed from nested repeaters ([669d5fc](https://github.com/Lincerossa/form-one/commit/669d5fc3a9d38a6c7ca8c200b8c9d4646b5c10c5))
+
 ## [1.4.1](https://github.com/Lincerossa/form-one/compare/v1.4.0...v1.4.1) (2021-03-01)
 
 
