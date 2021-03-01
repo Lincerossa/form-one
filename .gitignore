@@ -99,4 +99,4 @@ yalc.lock
 package-lock.json
 # End of https://www.gitignore.io/api/node
 
-styleguide
+storybook-static
