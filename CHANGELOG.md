@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/Lincerossa/form-one/compare/v1.4.0...v1.4.1) (2021-03-01)
+
+
+### Bug Fixes
+
+* removed not existing import ([be7098d](https://github.com/Lincerossa/form-one/commit/be7098d8cb081beb83721853ea741f16963ab28c))
+
 # [1.4.0](https://github.com/Lincerossa/form-one/compare/v1.3.1...v1.4.0) (2021-03-01)
 
 
