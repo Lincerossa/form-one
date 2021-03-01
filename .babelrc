@@ -6,6 +6,9 @@
       {
         "ssr": false
       }
-    ]
+    ],
+    ["import", {
+      "libraryName": "antd"
+    }]
   ]
 }
