@@ -2,7 +2,7 @@
 
 ## Why?
 
-form-one is built onto the react-hook-form library (which is an amazing library itself 🦄).
+form-one is built onto the react-hook-form library (V6) (which is an amazing library itself 🦄).
 form-one it is an abstraction of the react-hook-form library.
 form-one let you focusing just on the form api interface, which is really simple.
 ## How?
